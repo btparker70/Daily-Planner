@@ -67,39 +67,67 @@ for (i = 0; i < 9; i++) {
     $(row).attr('class', 'row');
     // Time on left
     var hour = $('<div/>').appendTo(row);
-    $(hour).attr('class', 'hour col-2');
+    // Adds hour and AM/PM
+    $(hour).attr('class', 'hour col-1');
     switch (i < 4) {
         case true:
-            $(hour).text((i + 9) + 'pm');
+            $(hour).text((i + 9));
             break;
         case false:
-            $(hour).text((i - 3) + 'pm');
+            $(hour).text((i - 3));
+            break;
+    }
+    switch (i < 3) {
+        case true:
+            $(hour).append('AM');
+            break;
+        case false:
+            $(hour).append('PM');
             break;
     }
 
+    // Description box middle
+    // var description = $('<div/>').appendTo(row);
+    // $(description).attr('class', 'hour col-10 description present');
 
-    // Text field middle
-    var description = $('<div/>').appendTo(row);
-    $(description).attr('class', 'hour col-8 description present');
     // Text Area
-    var textArea = $('<textarea/>').appendTo(description);
-    $(textArea).css('height', '100%');
-    $(textArea).css('width', '105%');
-    $(textArea).css('margin-left', '-2.2%');
-    $(textArea).attr('disabled', true);
-    // $(textArea).attr('disabled', false);
-    // $(textArea).css('row', '4');
-    // $(textArea).attr('col', '8');
-    // $(textArea).css('margin-left', '-2.2%');
+    // var textArea = $('<textarea/>').appendTo(description);
+    // $(textArea).attr('id', (hour).text());
+    // $(textArea).attr('disabled', true);
 
+    // test
+    var textArea = $('<textarea/>').appendTo(row);
+    $(textArea).attr('class', 'hour col-10 description present');
+    $(textArea).attr('disabled', true);
 
     // Save button right
     var saveBtn = $('<div/>').appendTo(row);
-    $(saveBtn).attr('class', 'saveBtn col-2');
+    $(saveBtn).attr('class', 'saveBtn col-1');
+    $(saveBtn).attr('id', (hour).text() + 'Save');
     $(saveBtn).prepend('<i class="far fa-save fa-2x center"></i>');
 }
 
-$(saveBtn).on('click', function () {
+var testHour = 12;
+var testHour12 = testHour % 12;
+
+$('[id*="' + (testHour) + '"]').removeClass('present').addClass('future');
+
+console.log(testHour % 12);
+
+console.log( $('[id*="11pm"]'));
+// $('[id*="12pm"]').removeClass('present').addClass('future');
+
+// $('description:contains(12pm)').removeClass('present').addClass('future');
+
+// $('#12pm').removeClass('present').addClass('future');
+
+
+$('#10AMSave').click(function() {
+   if ($(textArea).attr('disabled') === true) {
     $(textArea).attr('disabled', false);
+    console.log('test');
+   } else {
+       console.log('testfail');
+   }
 })
 
