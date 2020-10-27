@@ -22,7 +22,6 @@ m = moment.unix(7200);
 m = moment.utc();
 
 
-
 //This gives us the date/time of this moment object in my local time zone
 console.log(`toString() => ${m.toString()}`);
 
@@ -34,27 +33,73 @@ console.log(`toString() => ${m.toISOString()}`);
 // m = moment('2020-10-25');
 
 
-    // var row = $('<div />').appendTo('.container');
-    // // $timeBlock.attr('class', 'row present')
-    // var $row = $('<div/>').appendTo('.container');
-    // $row.attr('class', 'row');
-    // var $hour = $('<div/>').appendTo('.row');
-    // $hour.attr('class', 'hour ');
-    // var $saveBtn = $('<div/>').appendTo('.row');
-    // $saveBtn.attr('class', 'saveBtn present');
+// var row = $('<div />').appendTo('.container');
+// // $timeBlock.attr('class', 'row present')
+// var $row = $('<div/>').appendTo('.container');
+// $row.attr('class', 'row');
+// var $hour = $('<div/>').appendTo('.row');
+// $hour.attr('class', 'hour ');
+// var $saveBtn = $('<div/>').appendTo('.row');
+// $saveBtn.attr('class', 'saveBtn present');
 
-for (i = 0; i < 3; i++) {
+
+//month name
+var currMonthName = moment().format('MMMM');
+console.log(currMonthName);
+//day number
+var currDayNum = moment().format('DD');
+console.log(currDayNum);
+//day of week
+var currDOW = moment().format('dddd');
+console.log(currDOW);
+// hour
+var currHour = moment().format('HH');
+console.log(currHour);
+// Date in header
+$('#currentDay').text(currDOW + ', ' + currMonthName + ' ' + currDayNum);
+
+
+
+
+for (i = 0; i < 9; i++) {
     // Row
     var row = $('<div/>').appendTo('.container');
     $(row).attr('class', 'row');
     // Time on left
     var hour = $('<div/>').appendTo(row);
-    $(hour).attr('class', 'hour col-2 past');
+    $(hour).attr('class', 'hour col-2');
+    switch (i < 4) {
+        case true:
+            $(hour).text((i + 9) + 'pm');
+            break;
+        case false:
+            $(hour).text((i - 3) + 'pm');
+            break;
+    }
+
+
     // Text field middle
     var description = $('<div/>').appendTo(row);
-    $(description).attr('class', 'hour col-8 present');
+    $(description).attr('class', 'hour col-8 description present');
+    // Text Area
+    var textArea = $('<textarea/>').appendTo(description);
+    $(textArea).css('height', '100%');
+    $(textArea).css('width', '105%');
+    $(textArea).css('margin-left', '-2.2%');
+    $(textArea).attr('disabled', true);
+    // $(textArea).attr('disabled', false);
+    // $(textArea).css('row', '4');
+    // $(textArea).attr('col', '8');
+    // $(textArea).css('margin-left', '-2.2%');
+
+
     // Save button right
     var saveBtn = $('<div/>').appendTo(row);
     $(saveBtn).attr('class', 'saveBtn col-2');
     $(saveBtn).prepend('<i class="far fa-save fa-2x center"></i>');
 }
+
+$(saveBtn).on('click', function () {
+    $(textArea).attr('disabled', false);
+})
+
