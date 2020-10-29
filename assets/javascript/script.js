@@ -1,48 +1,3 @@
-
-//This gives us a moment object for the local date and time.
-let m = moment();
-
-// //iso 8601 string set day
-// m = moment('2020-10-25');
-// //iso 8601 string with time set day and time
-// m = moment('2020-10-25T23:10:00.000');
-// //iso 8601 string adjusting UTC with offset
-// m = moment('2020-10-25T23:10:00.000+05:00');
-
-//using the documentation, give accurate times based on local time format
-m = moment('10/25/2020 4:50PM', 'MM/DD/YYYY h:mmA');
-
-// create using miliseconds since epoc (jan 1 1970)
-m = moment(600000);
-
-//create using seconds since epoc jan 1 1970
-m = moment.unix(7200);
-
-// time and date in at UTC
-m = moment.utc();
-
-
-//This gives us the date/time of this moment object in my local time zone
-console.log(`toString() => ${m.toString()}`);
-
-//M moment date time string in ISO 8601 format and UTC
-//always returns UTC value in the ISO format
-console.log(`toString() => ${m.toISOString()}`);
-
-//iso 8601 string
-// m = moment('2020-10-25');
-
-
-// var row = $('<div />').appendTo('.container');
-// // $timeBlock.attr('class', 'row present')
-// var $row = $('<div/>').appendTo('.container');
-// $row.attr('class', 'row');
-// var $hour = $('<div/>').appendTo('.row');
-// $hour.attr('class', 'hour ');
-// var $saveBtn = $('<div/>').appendTo('.row');
-// $saveBtn.attr('class', 'saveBtn present');
-
-
 //month name
 var currMonthName = moment().format('MMMM');
 console.log(currMonthName);
@@ -59,13 +14,13 @@ console.log(currHour);
 $('#currentDay').text(currDOW + ', ' + currMonthName + ' ' + currDayNum);
 
 
-
-
+futureFlag = false;
 for (i = 0; i < 9; i++) {
-    // Row
+    // Create row for each hour
     var row = $('<div/>').appendTo('.container');
     $(row).attr('class', 'row');
-    // Time on left
+
+    // Hour div on left
     var hour = $('<div/>').appendTo(row);
     // Adds hour and AM/PM
     $(hour).attr('class', 'hour col-1');
@@ -86,19 +41,22 @@ for (i = 0; i < 9; i++) {
             break;
     }
 
-    // Description box middle
-    // var description = $('<div/>').appendTo(row);
-    // $(description).attr('class', 'hour col-10 description present');
-
-    // Text Area
-    // var textArea = $('<textarea/>').appendTo(description);
-    // $(textArea).attr('id', (hour).text());
-    // $(textArea).attr('disabled', true);
-
-    // test
+    // Create textarea in center
     var textArea = $('<textarea/>').appendTo(row);
-    $(textArea).attr('class', 'hour col-10 description present');
+    $(textArea).attr('id', (hour).text());
+    $(textArea).attr('class', 'hour col-10 description past');
     $(textArea).attr('disabled', true);
+
+    // Color codes based on time of day //
+    // Colors future time slots
+    if (futureFlag) {
+        $(textArea).attr('class', 'hour col-10 description future');
+    }
+    // Colors current time slot unless the work day is over
+    if ((parseInt($(textArea).attr('id')) == currentHour()) && (moment().format('HH') < 17)) {
+        $(textArea).attr('class', 'hour col-10 description present');
+        futureFlag = true;
+    }
 
     // Save button right
     var saveBtn = $('<div/>').appendTo(row);
@@ -107,27 +65,34 @@ for (i = 0; i < 9; i++) {
     $(saveBtn).prepend('<i class="far fa-save fa-2x center"></i>');
 }
 
-var testHour = 12;
-var testHour12 = testHour % 12;
+// Trims 0 from beginning of hour if there is one
+function currentHour() {
+    var currHour = moment().format('hh');
+    if (currHour < 10) {
+        var newCurrHour = currHour.slice(1, 2);
+        return newCurrHour;
+    } else {
+        return currHour;
+    }
+}
 
-$('[id*="' + (testHour) + '"]').removeClass('present').addClass('future');
-
-console.log(testHour % 12);
-
-console.log( $('[id*="11pm"]'));
-// $('[id*="12pm"]').removeClass('present').addClass('future');
-
-// $('description:contains(12pm)').removeClass('present').addClass('future');
-
-// $('#12pm').removeClass('present').addClass('future');
-
-
-$('#10AMSave').click(function() {
-   if ($(textArea).attr('disabled') === true) {
-    $(textArea).attr('disabled', false);
-    console.log('test');
-   } else {
-       console.log('testfail');
-   }
+// Save/Edit button functionality
+$('[id*="Save"]').click(function () {
+    var saveId = $(this).attr('id');                        // Save button id
+    var textareaId = '#' + saveId.slice(0, -4);             // remove 'Save' from id string 
+    if ($(textareaId).attr('disabled') === 'disabled') {    // Enable or disable textarea editing
+        $(textareaId).attr('disabled', false);
+    } else {
+        $(textareaId).attr('disabled', true);
+        var desc = $(textareaId).val();
+        localStorage.setItem((textareaId + 'desc'), desc);
+    }
 })
 
+// Populates textareas with stored text
+$('textarea').each(function () {
+    var textareaId = '#' + $(this).attr('id');
+    if (localStorage.key = (textareaId + 'desc')) {
+        $(textareaId).val(localStorage.getItem(textareaId + 'desc'));
+    }
+})
