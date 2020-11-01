@@ -1,19 +1,20 @@
-//month name
+// Month name
 var currMonthName = moment().format('MMMM');
-console.log(currMonthName);
-//day number
+
+// Day number
 var currDayNum = moment().format('DD');
-console.log(currDayNum);
-//day of week
+
+// Day of week
 var currDOW = moment().format('dddd');
-console.log(currDOW);
-// hour
+
+// Hour
 var currHour = moment().format('HH');
-console.log(currHour);
+
+
 // Date in header
 $('#currentDay').text(currDOW + ', ' + currMonthName + ' ' + currDayNum);
 
-
+// This var helps color code text areas based on time of day below
 futureFlag = false;
 for (i = 0; i < 9; i++) {
     // Create row for each hour

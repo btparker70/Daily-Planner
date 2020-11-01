@@ -9,7 +9,7 @@ Thanks for visiting! My name is Brian and I am a web development student through
 # Daily-Planner
 A simple day planner that helps you get organized. Time slots are color-coded based on the time of day. Simply enter click the edit button, enter your task and save!
 
-![screenshot](https://github.com/btparker70/Coding-Quiz/blob/main/assets/images/quiz0.png?raw=true)
+![screenshot](https://github.com/btparker70/Daily-Planner/blob/main/assets/images/cover.png?raw=true)
 
 # Table of Contents
 
